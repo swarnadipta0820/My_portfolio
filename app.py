@@ -1,13 +1,34 @@
 import streamlit as st
-st.set_page_config(page_title="My Portfolio", layout="wide")
-st.title("Hi, I'm Swarnadipta")
-st.subheader("Data Analyst | Labour Studies & Social Protection")
-st.write("Welcome to my portfolio")
+import pandas as pd
+import matplotlib.pyplot as plt
+import csv
+from datetime import datetime
 
+st.set_page_config(page_title="My Portfolio", layout="wide")
 st.sidebar.title("Navigation")
 page = st.sidebar.radio("Go to", ["Home", "Projects", "Insights", "About Me"])
 
-if page=="Projects":
+#HOME PAGE
+
+if page=="Home":
+    st.title("Hi, I'm Swarnadipta")
+    st.subheader("Data Analyst | Labour Studies & Social Protection | Finance Enthusiast")
+    st.write("Welcome to my portfolio!")
+    
+    st.info("🚧This portfolio is currently under development. More projects coming soon!")
+    st.warning("A growing portfolio of data analysis projects as I learn and explore the field of analytics, data science and machine learning. Feedback, suggestions, and corrections are always welcome")
+    
+    st.write("📧Send your feedback/suggestions/corrections to: swarnadipta.08@gmail.com")
+    
+    #suggestion=st.text_area("💬 Drop your suggestions/feedback/corrections here:")
+    #if st.button("Submit"):
+    #    if suggestion.strip():
+    #        with open("feedback.csv","a", newline="") as f:
+    #            writer = csv.writer(f)
+    #            writer.writenow([datetime.now(), suggestion])
+    #        st.success("Thank you for your input!")
+    
+elif page=="Projects":
     st.header("📊 My Projects")
     st.subheader ("Project 1: PHYSICAL ACTIVITY, DIETARY PRACTICES & HEALTH: A Study of I.T. Professionals in Bengaluru")
     st.write("""An individual’s diet and level of physical activity/inactivity are two of the most important determinants of a person’s health. Contemporary studies have seemed to state that there is significant level of association between a person’s involvement in physical activity at work and their health. It is also noteworthy that diet of individuals has changed in the recent times, with macro events like Globalization.
@@ -35,58 +56,54 @@ Communicable Diseases.""")
     - Hamilton et al (2008) suggests that people should stand more and sit less, along with brisk walking.
     """)
 
-import pandas as pd
-import matplotlib.pyplot as plt
+    df = pd.read_csv("Swarnadipta_BASS_DissertationResponses.csv")
+    st.dataframe(df)
+    # GENDER DISTRIBUTION
+    gender_counts = df["What gender do you identify as?"].value_counts()
+    fig,ax = plt.subplots()
+    ax.pie(
+        gender_counts,
+        labels = gender_counts.index,
+        autopct= "%1.1f%%",
+        colors = ["#4C72B0","#DD8452","#55A868"],
+        startangle=90
+    )
+    ax.set_title("Gender Distribution of Respondents")
+    st.pyplot(fig)
+    # INCOME DISTRIBUTION
+    st.bar_chart(df["What is your income per annum?"].value_counts())
+    # PHYSICAL FITNESS AFFECTED BY WORK
+    fitness_affect = df["How has your work affected your physical fitness/performance?"].value_counts()
+    fig1,ax1 = plt.subplots()
+    ax1.pie(
+        fitness_affect,
+        labels = fitness_affect.index,
+        autopct= "%1.1f%%",
+        colors = ["#4C72B0","#DD8452","#55A868"],
+        startangle=90
+    )
+    ax.set_title("Self-reported Effects of work on Physical Fitness")
+    st.pyplot(fig1)
 
-df = pd.read_csv("Swarnadipta_BASS_DissertationResponses.csv")
-st.dataframe(df)
-gender_counts = df["What gender do you identify as?"].value_counts()
-fig,ax = plt.subplots()
-ax.pie(
-    gender_counts,
-    labels = gender_counts.index,
-    autopct= "%1.1f%%",
-    colors = ["#4C72B0","#DD8452","#55A868"],
-    startangle=90
-)
-ax.set_title("Gender Distribution of Respondents")
-st.pyplot(fig)
+    # snack_components = df["What kind of snacks do you have between meals (breakfast and lunch/lunch and dinner)? "].value_counts()
+    # fig2,ax2 = plt.subplots(figsize = (8,6))
+    # wedges, texts, autotexts = ax2.pie(
+    #     snack_components,
+    #     labels = None,
+    #     autopct="%1.1f%%",
+    #     colors =['b','g','r','m','y','c'],
+    #     startangle=90
+    # )
 
-st.bar_chart(df["What is your income per annum?"].value_counts())
+    # ax2.legend(
+    #     wedges,
+    #     snack_components.index,
+    #     title = "Snack Types",
+    #     loc="center left",
+    #     bbox_to_anchor=(1,0,0.5,1),
+    #     fontsize=8
+    # )
 
-
-
-fitness_affect = df["How has your work affected your physical fitness/performance?"].value_counts()
-fig1,ax1 = plt.subplots()
-ax1.pie(
-    fitness_affect,
-    labels = fitness_affect.index,
-    autopct= "%1.1f%%",
-    colors = ["#4C72B0","#DD8452","#55A868"],
-    startangle=90
-)
-ax.set_title("Self-reported Effects of work on Physical Fitness")
-st.pyplot(fig1)
-
-# snack_components = df["What kind of snacks do you have between meals (breakfast and lunch/lunch and dinner)? "].value_counts()
-# fig2,ax2 = plt.subplots(figsize = (8,6))
-# wedges, texts, autotexts = ax2.pie(
-#     snack_components,
-#     labels = None,
-#     autopct="%1.1f%%",
-#     colors =['b','g','r','m','y','c'],
-#     startangle=90
-# )
-
-# ax2.legend(
-#     wedges,
-#     snack_components.index,
-#     title = "Snack Types",
-#     loc="center left",
-#     bbox_to_anchor=(1,0,0.5,1),
-#     fontsize=8
-# )
-
-# ax2.set_title("Components of Snacks")
-# plt.tight_layout()
-# st.pyplot(fig2)
+    # ax2.set_title("Components of Snacks")
+    # plt.tight_layout()
+    # st.pyplot(fig2)
